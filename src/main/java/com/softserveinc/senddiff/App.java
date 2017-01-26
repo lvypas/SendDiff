@@ -1,10 +1,13 @@
 package com.softserveinc.senddiff;
 
 
-public class App 
-{
+import com.softserveinc.senddiff.service.PropertiesService;
+
+public class App {
+
     public static void main( String[] args )
     {
-        System.out.println( "Test" );
+        PropertiesService propService = new PropertiesService();
+        propService.readProperties();
     }
 }
