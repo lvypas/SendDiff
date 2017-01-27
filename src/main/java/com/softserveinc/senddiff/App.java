@@ -47,19 +47,19 @@ public class App {
         dbService.tableToCsv("test_new.csv");
         dbService.closeConnection();
 
-        Set<String> resutls = compareService.compareCsvFiles("test_new.csv", "test_old.csv");
+        List<ComparedObject> resutls = compareService.compareCsvFiles("test_new.csv", "test_old.csv");
 
         if (NOTIFY_EMAIL.equalsIgnoreCase(AppProperties.getProps().getProperty("senddiff.send.method"))) {
             new SendEmailService().sendEmail("Updates on db sync run on:" + new Date(), resutls.toString());
         };
 
         if (NOTIFY_API.equalsIgnoreCase(AppProperties.getProps().getProperty("senddiff.send.method"))) {
-            new InvokeAPIService().invokeApi(resutls.toString());
+            new InvokeAPIService().invokeApi(map);
         };
 
         if (NOTIFY_EMAIL_API.equalsIgnoreCase(AppProperties.getProps().getProperty("senddiff.send.method"))) {
             new SendEmailService().sendEmail("Updates on db sync run on:" + new Date(), resutls.toString());
-            new InvokeAPIService().invokeApi(resutls.toString());
+            new InvokeAPIService().invokeApi(map);
         };
 
     }
