@@ -18,60 +18,12 @@ public class PropertiesService {
     private static final String API_ADDRESS = "api";
     private static final String FILENAME = "config.properties";
 
-    private String database;
-    private String dbuser;
-    private String dbpassword;
-    private String table;
-    private String email;
-    private String apiAddress;
-
-    public String getDatabase() {
-        return database;
-    }
-
-    private void setDatabase(String database) {
-        this.database = database;
-    }
-
-    public String getDbuser() {
-        return dbuser;
-    }
-
-    private void setDbuser(String dbuser) {
-        this.dbuser = dbuser;
-    }
-
-    public String getDbpassword() {
-        return dbpassword;
-    }
-
-    private void setDbpassword(String dbpassword) {
-        this.dbpassword = dbpassword;
-    }
-
-    public String getTable() {
-        return table;
-    }
-
-    private void setTable(String table) {
-        this.table = table;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    private void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getApiAddress() {
-        return apiAddress;
-    }
-
-    private void setApiAddress(String apiAddress) {
-        this.apiAddress = apiAddress;
-    }
+    public String database;
+    public String dbuser;
+    public String dbpassword;
+    public String table;
+    public String email;
+    public String apiAddress;
 
     public void readProperties() {
 
@@ -84,12 +36,12 @@ public class PropertiesService {
 
             prop.load(input);
 
-            setDatabase(prop.getProperty(DATABASE));
-            setDbuser(prop.getProperty(DBUSER));
-            setDbpassword(prop.getProperty(DBPASSWORD));
-            setTable(prop.getProperty(TABLE));
-            setEmail(prop.getProperty(EMAIL));
-            setApiAddress(prop.getProperty(API_ADDRESS));
+            database = prop.getProperty(DATABASE);
+            dbuser = prop.getProperty(DBUSER);
+            dbpassword = prop.getProperty(DBPASSWORD);
+            table = prop.getProperty(TABLE);
+            email = prop.getProperty(EMAIL);
+            apiAddress = prop.getProperty(API_ADDRESS);
 
         } catch (IOException ex) {
             ex.printStackTrace();
