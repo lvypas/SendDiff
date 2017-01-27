@@ -29,28 +29,20 @@ public class InvokeAPIService {
 
     public void invokeApi(Map<String, String> params) {
 
-        Properties apiProperties = new Properties();
-
-        try {
-            apiProperties.load(new FileInputStream("config.properties"));
-        } catch (IOException e) {
-            throw new RuntimeException("Properties file not found");
-        }
-
         try {
             HttpClient httpclient = HttpClients.createDefault();
             HttpResponse response = null;
 
-            if (POST.equalsIgnoreCase(apiProperties.getProperty("api.httpMethod"))) {
-                HttpPost httppost = new HttpPost(apiProperties.getProperty("api.baseUrl"));
+            if (POST.equalsIgnoreCase(AppProperties.getProps().getProperty("api.httpMethod"))) {
+                HttpPost httppost = new HttpPost(AppProperties.getProps().getProperty("api.baseUrl"));
                 final List<NameValuePair> sendObject = new ArrayList<NameValuePair>();
                 for (Map.Entry<String, String> entry : params.entrySet()){
                     sendObject.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
                 }
                 httppost.setEntity(new UrlEncodedFormEntity(sendObject, "UTF-8"));
                 response = httpclient.execute(httppost);
-            } else if (GET.equalsIgnoreCase(apiProperties.getProperty("api.httpMethod"))) {
-                String baseUrl = apiProperties.getProperty("api.baseUrl") + "?";
+            } else if (GET.equalsIgnoreCase(AppProperties.getProps().getProperty("api.httpMethod"))) {
+                String baseUrl = AppProperties.getProps().getProperty("api.baseUrl") + "?";
                 for (Map.Entry<String, String> entry : params.entrySet()){
                     baseUrl += entry.getKey() + "=" + entry.getValue() + "&";
                 }

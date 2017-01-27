@@ -10,7 +10,6 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Properties;
@@ -32,7 +31,7 @@ public class SendEmailService {
             throw new RuntimeException("Properties file not found");
         }
 
-        Session session = Session.getDefaultInstance(emailProperties);
+        Session session = Session.getDefaultInstance(AppProperties.getProps());
         try {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress());
@@ -53,7 +52,7 @@ public class SendEmailService {
         }
     }
 
-    public static void main( String[] args ) {
+    public static void main(String[] args) {
         new SendEmailService().sendEmail("vitaliy.vintonyak@gmail.com", "Email!!!", "<strong>Strongy</strong>");
     }
 
