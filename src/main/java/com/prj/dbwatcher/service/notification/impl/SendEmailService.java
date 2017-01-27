@@ -22,11 +22,11 @@ public class SendEmailService implements INotificationService {
 
     private static final Logger logger = LoggerFactory.getLogger(SendEmailService.class);
 
-    public void sendEmail(String subject, String messageText) {
-
-    }
-
     public void notify(List<ComparedObject> results) {
+        if (results.size() == 0) {
+            logger.info("No data to send - skipping notification email send.");
+            return;
+        }
         Session session = Session.getDefaultInstance(AppProperties.getProps());
         try {
             MimeMessage message = new MimeMessage(session);

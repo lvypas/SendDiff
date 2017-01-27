@@ -21,7 +21,11 @@ public class InvokeAPIService implements INotificationService {
     private static final Logger logger = LoggerFactory.getLogger(InvokeAPIService.class);
     public static String POST = "POST";
 
-    public void notify(List<ComparedObject> resutls) {
+    public void notify(List<ComparedObject> results) {
+        if (results.size() == 0) {
+            logger.info("No data to send - skipping notification API invocation.");
+            return;
+        }
         try {
             HttpClient httpclient = HttpClients.createDefault();
             HttpResponse response = null;
@@ -29,7 +33,7 @@ public class InvokeAPIService implements INotificationService {
             if (POST.equalsIgnoreCase(AppProperties.getProps().getProperty("notification.api.httpMethod"))) {
                 HttpPost httppost = new HttpPost(AppProperties.getProps().getProperty("notification.api.baseUrl"));
                 httppost.addHeader("content-type", "application/json");
-                StringEntity params = new StringEntity(getMessageBody(resutls));
+                StringEntity params = new StringEntity(getMessageBody(results));
                 httppost.setEntity(params);
                 response = httpclient.execute(httppost);
             } else {
