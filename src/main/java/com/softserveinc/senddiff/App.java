@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class App {
     private static final String LOOPON = "loopon";
@@ -47,10 +47,10 @@ public class App {
         dbService.tableToCsv("test_new.csv");
         dbService.closeConnection();
 
-        Set<String> resutls = compareService.compareCsvFiles("test_new.csv", "test_old.csv");
+        List<ComparedObject> resutls = compareService.compareCsvFiles("test_new.csv", "test_old.csv");
 
         Map map = new HashMap<String, String>();
-        for (String value : resutls) {
+        for (ComparedObject value : resutls) {
             map.put(value, 1);
         }
 
