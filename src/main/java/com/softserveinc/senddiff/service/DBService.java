@@ -69,7 +69,7 @@ public class DBService {
                 fw.append(',');
                 fw.append(rs.getString(3));
                 fw.append(',');
-                fw.append(rs.getString(3));
+                fw.append(rs.getString(4));
                 fw.append('\n');
             }
             fw.flush();
