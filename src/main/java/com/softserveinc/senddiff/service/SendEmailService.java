@@ -10,7 +10,6 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Properties;
@@ -22,27 +21,19 @@ public class SendEmailService {
 
     private static final Logger logger = LoggerFactory.getLogger(SendEmailService.class);
 
-    public void sendEmail(String to, String subject, String messageText) {
-        // Get system properties
-        Properties emailProperties = new Properties();
-
-        try {
-            emailProperties.load(new FileInputStream("config.properties"));
-        } catch (IOException e) {
-            throw new RuntimeException("Properties file not found");
-        }
-
-        Session session = Session.getDefaultInstance(emailProperties);
+    public void sendEmail(String subject, String messageText) {
+        Session session = Session.getDefaultInstance(AppProperties.getProps());
         try {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress());
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(AppProperties.getProps().getProperty("senddiff.to.email")));
             message.setSubject(subject);
             message.setContent(messageText, "text/html");
 
             Transport tr = session.getTransport("smtp");
-            tr.connect(emailProperties.getProperty("mail.smtp.host"),
-                    emailProperties.getProperty("mail.smtp.user"), emailProperties.getProperty("mail.smtp.password"));
+            tr.connect(AppProperties.getProps().getProperty("mail.smtp.host"),
+                    AppProperties.getProps().getProperty("mail.smtp.user"),
+                    AppProperties.getProps().getProperty("mail.smtp.password"));
             message.saveChanges();      // don't forget this
             tr.sendMessage(message, message.getAllRecipients());
             tr.close();
@@ -53,8 +44,8 @@ public class SendEmailService {
         }
     }
 
-    public static void main( String[] args ) {
-        new SendEmailService().sendEmail("vitaliy.vintonyak@gmail.com", "Email!!!", "<strong>Strongy</strong>");
+    public static void main(String[] args) {
+        new SendEmailService().sendEmail("Email!!!", "<strong>Strongy</strong>");
     }
 
 }

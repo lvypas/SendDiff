@@ -26,17 +26,10 @@ public class DBService {
     private static final String FILENAME = "config.properties";
     public static final String MYSQL_JDBC_DRIVER = "com.mysql.jdbc.Driver";
 
-    public Properties dbProperties;
+
     public Connection connection;
 
-    public void getPropersties() {
-        dbProperties = new Properties();
-        try {
-            dbProperties.load(new FileInputStream(FILENAME));
-        } catch (IOException e) {
-            throw new RuntimeException("Properties file not found");
-        }
-    }
+
 
     public void connectToDB() {
         try {
@@ -44,12 +37,12 @@ public class DBService {
         } catch (ClassNotFoundException cnfe) {
             logger.error("MySQL JDBC Driver not found: " + cnfe.getMessage());
         }
-        getPropersties();
+
         try {
             connection =  DriverManager.getConnection(
-                    "jdbc:mysql://" + dbProperties.getProperty(DATABASE_HOST) +":"+
-                            dbProperties.getProperty(DATABASE_PORT) + "/" + dbProperties.getProperty(DATABASE_SCHEME),
-                    dbProperties.getProperty(DATABASE_USER), dbProperties.getProperty(DATABASE_PASSWORD));
+                    "jdbc:mysql://" + AppProperties.getProps().getProperty(DATABASE_HOST) +":"+
+                            AppProperties.getProps().getProperty(DATABASE_PORT) + "/" + AppProperties.getProps().getProperty(DATABASE_SCHEME),
+                    AppProperties.getProps().getProperty(DATABASE_USER), AppProperties.getProps().getProperty(DATABASE_PASSWORD));
         } catch (SQLException se) {
             logger.error("DB connection Failed!: " + se.getMessage());
         }
@@ -69,7 +62,7 @@ public class DBService {
     public void tableToCsv(String fileName) {
         try {
             CSVWriter writer = new CSVWriter(new FileWriter((fileName)));
-            String query = "select * from "+ dbProperties.getProperty(DATABASE_TABLE);
+            String query = "select * from "+ AppProperties.getProps().getProperty(DATABASE_TABLE);
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             writer.writeAll(rs, true);
