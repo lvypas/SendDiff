@@ -2,7 +2,8 @@
 java -jar <jar file name>
 
 ### Properties
-config.properties should have all properties filled in.
+- config.properties should have all properties filled in and located in the same folder where jar file is located.
+- all the important properties are marked as #TOBE CHANGED
 
 ### Acceptable runtime arguments
 "loopon" - indicate to run application continiously with interval specified in config.properties - e.g. java -jar <jar file name> loopon
