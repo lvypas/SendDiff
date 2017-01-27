@@ -48,7 +48,7 @@ public class SendEmailService {
             tr.close();
 
             logger.info("Sent message successfully on:" + new Date());
-        }catch (MessagingException mex) {
+        } catch (MessagingException mex) {
             logger.error("Sent message failed:" + mex.getMessage());
         }
     }
