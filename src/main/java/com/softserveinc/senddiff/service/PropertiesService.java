@@ -10,6 +10,7 @@ import java.util.Properties;
  */
 public class PropertiesService {
 
+    private static final String DATABASE_URI = "database_uri";
     private static final String DATABASE = "database";
     private static final String DBUSER = "dbuser";
     private static final String DBPASSWORD = "dbpassword";
@@ -18,6 +19,7 @@ public class PropertiesService {
     private static final String API_ADDRESS = "api";
     private static final String FILENAME = "config.properties";
 
+    public String databaseUri;
     public String database;
     public String dbuser;
     public String dbpassword;
@@ -36,6 +38,7 @@ public class PropertiesService {
 
             prop.load(input);
 
+            databaseUri = prop.getProperty(DATABASE_URI);
             database = prop.getProperty(DATABASE);
             dbuser = prop.getProperty(DBUSER);
             dbpassword = prop.getProperty(DBPASSWORD);
