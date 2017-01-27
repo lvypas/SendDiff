@@ -8,6 +8,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.slf4j.Logger;
@@ -25,9 +26,8 @@ import java.util.*;
 public class InvokeAPIService {
     private static final Logger logger = LoggerFactory.getLogger(InvokeAPIService.class);
     public static String POST = "POST";
-    public static String GET = "GET";
 
-    public void invokeApi(Map<String, String> params) {
+    public void invokeApi(String messageText) {
 
         try {
             HttpClient httpclient = HttpClients.createDefault();
@@ -35,21 +35,10 @@ public class InvokeAPIService {
 
             if (POST.equalsIgnoreCase(AppProperties.getProps().getProperty("api.httpMethod"))) {
                 HttpPost httppost = new HttpPost(AppProperties.getProps().getProperty("api.baseUrl"));
-                final List<NameValuePair> sendObject = new ArrayList<NameValuePair>();
-                for (Map.Entry<String, String> entry : params.entrySet()){
-                    sendObject.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
-                }
-                httppost.setEntity(new UrlEncodedFormEntity(sendObject, "UTF-8"));
+                httppost.addHeader("content-type", "application/json");
+                StringEntity params = new StringEntity(messageText);
+                httppost.setEntity(params);
                 response = httpclient.execute(httppost);
-            } else if (GET.equalsIgnoreCase(AppProperties.getProps().getProperty("api.httpMethod"))) {
-                String baseUrl = AppProperties.getProps().getProperty("api.baseUrl") + "?";
-                for (Map.Entry<String, String> entry : params.entrySet()){
-                    baseUrl += entry.getKey() + "=" + entry.getValue() + "&";
-                }
-                baseUrl += "x=y";
-                HttpGet httpget = new HttpGet(baseUrl);
-
-                response = httpclient.execute(httpget);
             } else {
                 throw new RuntimeException("API method call not supported");
             }
@@ -61,9 +50,6 @@ public class InvokeAPIService {
     }
 
     public static void main( String[] args ) {
-        Map params = new HashMap();
-        params.put("param1", "value1");
-        params.put("param2", "value2");
-        new InvokeAPIService().invokeApi(params);
+        new InvokeAPIService().invokeApi("{\"id\":\"0\"}");
     }
 }
