@@ -1,12 +1,12 @@
 package com.softserveinc.senddiff.service;
 
-import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.*;
-import java.util.HashSet;
 import java.util.Properties;
 
 /**
@@ -88,23 +88,4 @@ public class DBService {
             logger.error("File creation failed!: " + ex.getMessage());
         }
     }
-
-    public String compareCsvFiles(String firstFile, String secondFile){
-        String diff = "";
-        // using FileUtils to read in the files.
-        HashSet<String> f1 = null;
-        HashSet<String> f2 = null;
-        try {
-            f1 = new HashSet<String>(FileUtils.readLines(new File(firstFile)));
-            f2 = new HashSet<String>(FileUtils.readLines(new File(secondFile)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        f2.removeAll(f1); // f2 now contains only the lines which are not in f1
-        diff = f2.toString();
-        System.out.println(diff);
-        return diff;
-    }
-
 }
