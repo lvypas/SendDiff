@@ -80,7 +80,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>electrical.power.system.Main</mainClass>
+                            <mainClass>com.prj.dbwatcher.App</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
