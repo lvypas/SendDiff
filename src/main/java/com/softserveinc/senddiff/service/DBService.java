@@ -1,5 +1,6 @@
 package com.softserveinc.senddiff.service;
 
+import com.opencsv.CSVWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,23 +68,13 @@ public class DBService {
 
     public void tableToCsv(String fileName) {
         try {
-            FileWriter fw = new FileWriter(fileName);
+            CSVWriter writer = new CSVWriter(new FileWriter((fileName)));
             String query = "select * from "+ dbProperties.getProperty(DATABASE_TABLE);
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
-            while (rs.next()) {
-                fw.append(rs.getString(1));
-                fw.append(',');
-                fw.append(rs.getString(2));
-                fw.append(',');
-                fw.append(rs.getString(3));
-                fw.append(',');
-                fw.append(rs.getString(4));
-                fw.append('\n');
-            }
-            fw.flush();
-            fw.close();
-            logger.info("CSV File is created successfully: ");
+            writer.writeAll(rs, true);
+            writer.close();
+            logger.info("CSV File is created successfully: " + fileName);
         } catch (Exception ex) {
             logger.error("File creation failed!: " + ex.getMessage());
         }
